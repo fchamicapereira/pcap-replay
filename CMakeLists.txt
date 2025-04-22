@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(pktgen)
+project(pcap-replay)
 
 ###############################################################################
 # Configuring C++ standard version
@@ -73,7 +73,7 @@ link_directories(${DPDK_LIBRARY_DIRS})
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 ###############################################################################
-# Building the pktgen executable
+# Building the executable
 ###############################################################################
 
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -84,22 +84,3 @@ target_link_options(${PROJECT_NAME} PUBLIC "-Wl,--disable-new-dtags")
 
 target_link_libraries(${PROJECT_NAME} ${DPDK_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${PCAP_LIBRARIES})
-
-###############################################################################
-# Also build an executable for each tool
-###############################################################################
-
-list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/pktgen.cpp)
-file(GLOB SOURCES_TOOLS ${PROJECT_SOURCE_DIR}/src/tools/*.c ${PROJECT_SOURCE_DIR}/src/tools/*.cpp)
-
-foreach(SOURCE_TOOL ${SOURCES_TOOLS})
-    get_filename_component(TOOL_NAME ${SOURCE_TOOL} NAME_WE)
-    set(TOOL_SOURCES ${SOURCE_TOOL} ${SOURCES})
-    add_executable(${TOOL_NAME} ${TOOL_SOURCES})
-
-    # https://stackoverflow.com/questions/56381463/executable-missing-full-library-path-after-build
-    # cmake black magic...
-    target_link_options(${TOOL_NAME} PUBLIC "-Wl,--disable-new-dtags")
-
-    target_link_libraries(${TOOL_NAME} ${DPDK_LIBRARIES})
-endforeach(SOURCE_TOOL ${SOURCES_TOOLS})

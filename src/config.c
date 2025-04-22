@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #include "log.h"
-#include "pktgen.h"
+#include "common.h"
 
 #define CMD_HELP "help"
 #define CMD_TEST "test"
@@ -118,8 +118,7 @@ void config_print_usage(char **argv) {
       "\t[--" CMD_TRAFFIC_DISTRIBUTION " <dist>]: traffic distribution (default=%s)\n"
       "\t[--" CMD_ZIPF_PARAM " <param>]: Zipf parameter (default=%.2f)\n",
       argv[0], DEFAULT_TOTAL_FLOWS, DEFAULT_PKT_SIZE, DEFAULT_CRC_UNIQUE_FLOWS ? "true" : "false", DEFAULT_CRC_BITS, WARMUP_PROTO_ID,
-      DEFAULT_MARK_WARMUP_PKTS, DEFAULT_DUMP_FLOWS_TO_FILE, DEFAULT_KVS_MODE, DEFAULT_KVS_GET_RATIO, default_traffic_dist_str,
-      DEFAULT_ZIPF_PARAM);
+      DEFAULT_MARK_WARMUP_PKTS, DEFAULT_DUMP_FLOWS_TO_FILE, DEFAULT_KVS_MODE, DEFAULT_KVS_GET_RATIO, default_traffic_dist_str, DEFAULT_ZIPF_PARAM);
 }
 
 static uintmax_t parse_int(const char *str, const char *name, int base) {
@@ -145,8 +144,8 @@ static double parse_double(const char *str, const char *name) {
   return result;
 }
 
-#define PARSER_ASSERT(cond, fmt, ...)                                                                                                      \
-  if (!(cond))                                                                                                                             \
+#define PARSER_ASSERT(cond, fmt, ...)                                                                                                                \
+  if (!(cond))                                                                                                                                       \
     rte_exit(EXIT_FAILURE, fmt, ##__VA_ARGS__);
 
 void config_init(int argc, char **argv) {
@@ -248,13 +247,13 @@ void config_init(int argc, char **argv) {
     } break;
     case CMD_TX_PORT_NUM: {
       config.tx.port = parse_int(optarg, CMD_TX_PORT, 10);
-      PARSER_ASSERT(config.tx.port < nb_devices, "Invalid TX device: requested %" PRIu16 " but only %" PRIu16 " available.\n",
-                    config.tx.port, nb_devices);
+      PARSER_ASSERT(config.tx.port < nb_devices, "Invalid TX device: requested %" PRIu16 " but only %" PRIu16 " available.\n", config.tx.port,
+                    nb_devices);
     } break;
     case CMD_RX_PORT_NUM: {
       config.rx.port = parse_int(optarg, CMD_RX_PORT, 10);
-      PARSER_ASSERT(config.rx.port < nb_devices, "Invalid RX device: requested %" PRIu16 " but only %" PRIu16 " available.\n",
-                    config.rx.port, nb_devices);
+      PARSER_ASSERT(config.rx.port < nb_devices, "Invalid RX device: requested %" PRIu16 " but only %" PRIu16 " available.\n", config.rx.port,
+                    nb_devices);
     } break;
     case CMD_NUM_TX_CORES_NUM: {
       config.tx.num_cores = parse_int(optarg, CMD_NUM_TX_CORES, 10);
@@ -274,8 +273,8 @@ void config_init(int argc, char **argv) {
     } break;
     case CMD_KVS_GET_RATIO_NUM: {
       config.kvs_get_ratio = parse_double(optarg, CMD_KVS_GET_RATIO);
-      PARSER_ASSERT(config.kvs_get_ratio >= 0.0 && config.kvs_get_ratio <= 1.0,
-                    "KVS get ratio must be in the interval [0.0-1.0] (requested %lf).\n", config.kvs_get_ratio);
+      PARSER_ASSERT(config.kvs_get_ratio >= 0.0 && config.kvs_get_ratio <= 1.0, "KVS get ratio must be in the interval [0.0-1.0] (requested %lf).\n",
+                    config.kvs_get_ratio);
     } break;
     default:
       rte_exit(EXIT_FAILURE, "Unknown option %c\n", opt);

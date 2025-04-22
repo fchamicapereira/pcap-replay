@@ -10,7 +10,7 @@
 #include <cmath>
 
 #include "log.h"
-#include "pktgen.h"
+#include "common.h"
 #include "random.h"
 
 std::vector<flow_t> flows;

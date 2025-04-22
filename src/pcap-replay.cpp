@@ -1,4 +1,4 @@
-#include "pktgen.h"
+#include "common.h"
 
 #include <pcap.h>
 #include <rte_cycles.h>
@@ -146,8 +146,7 @@ struct rte_mempool *create_mbuf_pool(unsigned lcore_id) {
 
   unsigned socket_id = rte_lcore_to_socket_id(lcore_id);
 
-  struct rte_mempool *mbuf_pool =
-      rte_pktmbuf_pool_create(MBUF_POOL_NAME, mbuf_entries, MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE, socket_id);
+  struct rte_mempool *mbuf_pool = rte_pktmbuf_pool_create(MBUF_POOL_NAME, mbuf_entries, MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE, socket_id);
 
   if (mbuf_pool == NULL) {
     rte_exit(EXIT_FAILURE, "Failed to create mbuf pool\n");

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "pktgen.h"
+#include "common.h"
 
 struct flow_t {
   rte_be32_t src_ip;

@@ -2,7 +2,7 @@
 #include <rte_ethdev.h>
 
 #include "log.h"
-#include "pktgen.h"
+#include "common.h"
 
 static void cmd_stats_display_port(uint16_t port_id) {
   struct rte_eth_stats stats;

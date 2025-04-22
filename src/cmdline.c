@@ -12,14 +12,14 @@
 
 #include "clock.h"
 #include "log.h"
-#include "pktgen.h"
+#include "common.h"
 
-#define CMDLINE_PARSE_INT_NTOKENS(NTOKENS)                                                                                                 \
-  struct {                                                                                                                                 \
-    void (*f)(void *, struct cmdline *, void *);                                                                                           \
-    void *data;                                                                                                                            \
-    const char *help_str;                                                                                                                  \
-    cmdline_parse_token_hdr_t *tokens[(NTOKENS) + 1];                                                                                      \
+#define CMDLINE_PARSE_INT_NTOKENS(NTOKENS)                                                                                                           \
+  struct {                                                                                                                                           \
+    void (*f)(void *, struct cmdline *, void *);                                                                                                     \
+    void *data;                                                                                                                                      \
+    const char *help_str;                                                                                                                            \
+    cmdline_parse_token_hdr_t *tokens[(NTOKENS) + 1];                                                                                                \
   }
 
 struct cmd_get_params {
@@ -35,8 +35,7 @@ struct cmd_intint_params {
   uint32_t param2;
 };
 
-#define INIT_PARAMETERLESS_COMMAND(var, cmd, str)                                                                                          \
-  cmdline_parse_token_string_t(var) = TOKEN_STRING_INITIALIZER(struct cmd_get_params, cmd, (str));
+#define INIT_PARAMETERLESS_COMMAND(var, cmd, str) cmdline_parse_token_string_t(var) = TOKEN_STRING_INITIALIZER(struct cmd_get_params, cmd, (str));
 
 #define INIT_INT_COMMAND(var, cmd, str) cmdline_parse_token_string_t(var) = TOKEN_STRING_INITIALIZER(struct cmd_int_params, cmd, (str));
 
@@ -150,9 +149,7 @@ void cmd_warmup(time_s_t time) {
 
 static void cmd_quit_callback(__rte_unused void *ptr_params, struct cmdline *ctx, __rte_unused void *ptr_data) { cmdline_quit(ctx); }
 
-static void cmd_start_callback(__rte_unused void *ptr_params, __rte_unused struct cmdline *ctx, __rte_unused void *ptr_data) {
-  cmd_start();
-}
+static void cmd_start_callback(__rte_unused void *ptr_params, __rte_unused struct cmdline *ctx, __rte_unused void *ptr_data) { cmd_start(); }
 
 static void cmd_stop_callback(__rte_unused void *ptr_params, __rte_unused struct cmdline *ctx, __rte_unused void *ptr_data) { cmd_stop(); }
 
@@ -160,9 +157,7 @@ static void cmd_stats_callback(__rte_unused void *ptr_params, __rte_unused struc
   cmd_stats_display_compact();
 }
 
-static void cmd_flows_callback(__rte_unused void *ptr_params, __rte_unused struct cmdline *ctx, __rte_unused void *ptr_data) {
-  cmd_flows_display();
-}
+static void cmd_flows_callback(__rte_unused void *ptr_params, __rte_unused struct cmdline *ctx, __rte_unused void *ptr_data) { cmd_flows_display(); }
 
 static void cmd_stats_reset_callback(__rte_unused void *ptr_params, __rte_unused struct cmdline *ctx, __rte_unused void *ptr_data) {
   cmd_stats_reset();

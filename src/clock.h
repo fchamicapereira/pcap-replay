@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 
-#include "pktgen.h"
+#include "common.h"
 
 typedef uint64_t ticks_t;
 
