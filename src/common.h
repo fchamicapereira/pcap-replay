@@ -55,35 +55,6 @@ typedef uint64_t time_ns_t;
 
 typedef uint32_t crc32_t;
 
-#define KEY_SIZE_BYTES 16
-#define MAX_VALUE_SIZE_BYTES 16
-#define KVSTORE_PORT 670
-
-enum kvs_op {
-  KVS_OP_GET = 0,
-  KVS_OP_PUT = 1,
-  KVS_OP_DEL = 2,
-};
-
-enum kvs_status {
-  KVS_STATUS_MISS = 0,
-  KVS_STATUS_HIT  = 1,
-};
-
-typedef uint8_t kv_key_t[KEY_SIZE_BYTES];
-typedef uint8_t kv_value_t[MAX_VALUE_SIZE_BYTES];
-
-struct kvs_hdr_t {
-  uint8_t op;
-  kv_key_t key;
-  kv_value_t value;
-  uint8_t status;
-  uint16_t client_port;
-} __attribute__((__packed__));
-
-#define KVS_PKT_SIZE_BYTES                                                                                                                 \
-  (RTE_ETHER_CRC_LEN + sizeof(struct rte_ether_hdr) + sizeof(struct rte_ipv4_hdr) + sizeof(struct rte_udp_hdr) + sizeof(struct kvs_hdr_t))
-
 typedef uint64_t churn_fpm_t;
 typedef uint64_t churn_fps_t;
 
@@ -123,8 +94,6 @@ struct config_t {
   rate_mbps_t warmup_rate;
   bool warmup_active;
   bool mark_warmup_packets;
-  bool kvs_mode;
-  double kvs_get_ratio;
 
   churn_fpm_t max_churn;
   rate_gbps_t rate;
